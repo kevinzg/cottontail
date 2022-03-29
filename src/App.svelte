@@ -1,65 +1,34 @@
 <script lang="ts">
-    import logo from './assets/svelte.png';
-    import Counter from './lib/Counter.svelte';
 </script>
 
-<main>
-    <img src={logo} alt="Svelte Logo" />
-    <h1>Hello Typescript!</h1>
-
-    <Counter />
-
+<main class="mx-auto my-8 w-96 space-y-4 text-gray-800">
+    <h1 class="text-center text-3xl font-bold">Sample text</h1>
     <p>
-        Visit <a href="https://svelte.dev">svelte.dev</a> to learn how to build Svelte
-        apps.
+        Aut omnis harum dolore itaque unde. Perspiciatis quis eum eveniet ab.
+        Quia voluptatem tempore cumque libero. Et quas assumenda porro
+        explicabo. Assumenda ab provident ullam voluptatem.
     </p>
-
     <p>
-        Check out <a href="https://github.com/sveltejs/kit#readme">SvelteKit</a>
-        for the officially supported framework, also powered by Vite!
+        Aliquid minus sunt velit officia est quod. Et rerum asperiores dolores
+        architecto maiores iure sed praesentium. Laudantium ipsam veritatis et
+        sapiente molestiae enim odio temporibus. Pariatur aut laborum et nisi
+        debitis.
+    </p>
+    <p>
+        Laboriosam dicta blanditiis veritatis dolorem et. Architecto in omnis
+        minus. In quae consequatur est voluptatibus doloremque porro sunt.
+        Voluptate quasi laborum voluptates cumque reprehenderit quos architecto.
+    </p>
+    <p>
+        Debitis eum earum et dolorum aspernatur sint exercitationem. Et eum
+        quasi tempore ea. Et sed modi rerum dicta molestias facere aliquam.
+    </p>
+    <p>
+        Neque et ex ut voluptatem. Quia quo nesciunt quia numquam. Vero
+        reiciendis aut nostrum rerum vel quidem adipisci.
     </p>
 </main>
 
+
 <style>
-    :root {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-            Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    }
-
-    main {
-        text-align: center;
-        padding: 1em;
-        margin: 0 auto;
-    }
-
-    img {
-        height: 16rem;
-        width: 16rem;
-    }
-
-    h1 {
-        color: #ff3e00;
-        text-transform: uppercase;
-        font-size: 4rem;
-        font-weight: 100;
-        line-height: 1.1;
-        margin: 2rem auto;
-        max-width: 14rem;
-    }
-
-    p {
-        max-width: 14rem;
-        margin: 1rem auto;
-        line-height: 1.35;
-    }
-
-    @media (min-width: 480px) {
-        h1 {
-            max-width: none;
-        }
-
-        p {
-            max-width: none;
-        }
-    }
 </style>
