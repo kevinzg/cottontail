@@ -1,5 +1,6 @@
 <script lang="ts">
     import Form from './lib/Form.svelte';
+    import Window from './lib/Window.svelte';
 </script>
 
 <main class="mx-auto my-8 w-96 space-y-4 text-gray-800">
@@ -30,7 +31,9 @@
     </p>
 </main>
 
-<Form />
+<Window x={20} y={50}>
+    <Form />
+</Window>
 
 <style>
 </style>
