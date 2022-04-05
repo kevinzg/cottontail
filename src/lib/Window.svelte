@@ -77,8 +77,11 @@
     .window {
         position: fixed;
         overflow: hidden;
-        resize: both;
+        resize: horizontal;
         user-select: none;
         z-index: 9999;
+
+        min-width: 480px;
+        min-height: 540px;
     }
 </style>
