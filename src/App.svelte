@@ -31,7 +31,7 @@
     </p>
 </main>
 
-<Window x={20} y={50}>
+<Window x={20} y={50} w={480} h={540}>
     <Form />
 </Window>
 
