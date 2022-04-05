@@ -68,7 +68,7 @@
     >
         <span>Create card</span>
     </div>
-    <div class="overflow-auto p-4">
+    <div class="overflow-auto py-1 px-2">
         <slot />
     </div>
 </div>
