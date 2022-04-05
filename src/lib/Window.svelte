@@ -79,5 +79,6 @@
         overflow: hidden;
         resize: both;
         user-select: none;
+        z-index: 9999;
     }
 </style>
