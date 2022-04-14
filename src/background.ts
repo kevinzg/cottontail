@@ -1,5 +1,8 @@
 import browser from 'webextension-polyfill';
 
+import { Database } from './lib/Database';
+import type { ICard } from './lib/types';
+
 browser.contextMenus.create(
     {
         id: 'menuItemCreateCard',
@@ -23,3 +26,11 @@ function executeContentScript(tab: browser.Tabs.Tab) {
         })
         .catch(console.error);
 }
+
+const db = new Database();
+
+browser.runtime.onMessage.addListener(async (message) => {
+    const card: ICard = message.card;
+    const resp = await db.cards.add(card).catch(console.error);
+    return resp;
+});

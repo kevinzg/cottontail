@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import Cottontail from './Cottontail.svelte';
 import './main.css';
 
@@ -6,13 +8,22 @@ const get = (): Cottontail => {
     if (w.__cottontail__) {
         return w.__cottontail__;
     }
-    console.info('Loading Cottontail');
+
+    console.info('Cottontail loading');
+
     const div = document.createElement('div');
     document.body.appendChild(div);
-    w.__cottontail__ = new Cottontail({
+
+    const app = new Cottontail({
         target: div,
     });
-    return w.__cottontail__;
+    app.$on('save', async (ev) => {
+        const resp = await browser.runtime.sendMessage({ card: ev.detail });
+        console.log('Cottontail', resp);
+    });
+
+    w.__cottontail__ = app;
+    return app;
 };
 
 try {

@@ -1,15 +1,31 @@
 <script lang="ts">
+    import { createEventDispatcher } from 'svelte';
+
     import Editor from './Editor.svelte';
+    import type { ICard } from './types';
+
+    const dispatch = createEventDispatcher();
 
     let front: Editor;
     let back: Editor;
+    let title = '';
 
-    const submit = (ev: SubmitEvent) => {
-        const form: HTMLFormElement = ev.target as any;
-        const data = new FormData(form);
-        console.log(front.getContent());
-        console.log(back.getContent());
-        console.log(Object.fromEntries([...data.entries()]));
+    const submit = () => {
+        const b = back.getContent();
+        const now = new Date();
+        const card: ICard = {
+            uuid: 'new uuid',
+            title,
+            content: b.text,
+            category: 'default',
+            source: {
+                url: window.location.toString(),
+                name: window.document.title,
+            },
+            createdAt: now, // TODO: Should be set by the DB
+            updatedAt: now,
+        };
+        dispatch('save', card);
     };
 </script>
 
@@ -31,6 +47,7 @@
             name="name"
             placeholder="(optional)"
             class="card-name py-1 px-1 text-sm text-gray-800 placeholder:text-sm placeholder:italic placeholder:text-gray-400"
+            bind:value={title}
         />
     </fieldset>
 

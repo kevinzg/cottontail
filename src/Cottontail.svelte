@@ -14,7 +14,7 @@
 </script>
 
 <Window on:close={hide} {hidden} x={20} y={50} w={480} h={540}>
-    <Form on:close={hide} />
+    <Form on:close={hide} on:save />
 </Window>
 
 {#if hidden}
