@@ -7,12 +7,8 @@
         "message": "Capture web snippets into a notebook.",
         "description": "Description of the add-on."
     },
-    "menuItemTakeNote": {
-        "message": "Take note",
-        "description": "Title of context menu item that opens the take note window when clicked."
-    },
-    "browserActionOpenSideBar": {
-        "message": "Open Cottontail sidebar",
-        "description": "Title of browser action button that opens the sidebar when clicked."
+    "menuItemCreateCard": {
+        "message": "Create Cottontail note",
+        "description": "Title of context menu item that opens the create a note window when clicked."
     }
 }
