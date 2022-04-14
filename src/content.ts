@@ -1,3 +1,11 @@
-console.log('Content script');
+import Cottontail from './Cottontail.svelte';
+import './main.css';
 
-export {};
+const div = document.createElement('div');
+document.body.appendChild(div);
+
+const app = new Cottontail({
+    target: div,
+});
+
+export default app;
