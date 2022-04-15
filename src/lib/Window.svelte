@@ -22,9 +22,9 @@
     let titleBar: HTMLElement;
 
     onMount(() => {
-        const mouseDown$ = fromEvent(titleBar, 'mousedown');
-        const mouseUp$ = fromEvent(window.document, 'mouseup');
-        const mouseMove$ = fromEvent(window.document, 'mousemove');
+        const mouseDown$ = fromEvent<MouseEvent>(titleBar, 'mousedown');
+        const mouseUp$ = fromEvent<MouseEvent>(window.document, 'mouseup');
+        const mouseMove$ = fromEvent<MouseEvent>(window.document, 'mousemove');
 
         const sub = mouseDown$
             .pipe(
