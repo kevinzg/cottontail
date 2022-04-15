@@ -4,6 +4,8 @@
     import StarterKit from '@tiptap/starter-kit';
     import Image from '@tiptap/extension-image';
 
+    export let id: string;
+
     let element: HTMLDivElement;
     let editor: Editor;
 
@@ -39,7 +41,7 @@
     }
 </script>
 
-<div class="border border-gray-300 bg-white" bind:this={element} />
+<div {id} class="border border-gray-300 bg-white" bind:this={element} />
 
 <style>
     :global(.ProseMirror) {
