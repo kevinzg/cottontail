@@ -62,12 +62,12 @@
 
 <div
     style="left: {x}px; top: {y}px;"
-    class="waves window rounded border border-gray-900/20 shadow-lg"
+    class="waves window rounded border border-gray-300 shadow-lg"
     class:hidden
 >
     <div
         bind:this={titleBar}
-        class="title-bar cursor-move bg-gradient-to-b from-gray-100 to-gray-300 text-center text-sm font-medium text-gray-600"
+        class="title-bar cursor-move border-b border-gray-300 bg-gradient-to-b from-gray-100 to-gray-300 text-center text-sm font-medium text-gray-600"
     >
         <span>Cottontail</span>
         <!-- TODO: style -->
