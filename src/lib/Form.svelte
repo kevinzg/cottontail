@@ -26,29 +26,24 @@
 
 <form on:submit|preventDefault={submit} class="space-y-1">
     <fieldset>
-        <label class="font-medium text-gray-700" for="front">Front</label>
-        <Editor bind:this={front} />
-    </fieldset>
-
-    <fieldset>
-        <label class="font-medium text-gray-700" for="back">Back</label>
-        <Editor bind:this={back} />
+        <label class="font-medium text-gray-700" for="back">Content</label>
+        <Editor bind:this={editor} />
     </fieldset>
 
     <fieldset class="flex flex-col">
-        <label class="font-medium text-gray-700" for="name">Card name</label>
+        <label class="font-medium text-gray-700" for="name">Title</label>
         <input
             id="name"
             name="name"
             placeholder="(optional)"
-            class="card-name py-1 px-1 text-sm text-gray-800 placeholder:text-sm placeholder:italic placeholder:text-gray-400"
+            class="border border-gray-300 py-1 px-1 text-sm text-gray-800 placeholder:text-sm placeholder:italic placeholder:text-gray-400"
             bind:value={title}
         />
     </fieldset>
 
     <div class="flex justify-around py-2">
         <button
-            on:click|preventDefault={() => {}}
+            on:click|preventDefault={() => dispatch('close')}
             class="rounded bg-red-300 p-1 px-4 text-gray-800"
         >
             Close
@@ -58,9 +53,3 @@
         </button>
     </div>
 </form>
-
-<style>
-    .card-name {
-        border: 1px solid #ccc;
-    }
-</style>
