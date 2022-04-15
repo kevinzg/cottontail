@@ -27,7 +27,7 @@
     };
 </script>
 
-<form on:submit|preventDefault={submit} class="space-y-1">
+<form on:submit|preventDefault={submit} class="flex h-full flex-col space-y-1">
     <fieldset class="flex flex-col">
         <label class="text-sm font-medium text-gray-700" for="name">Title</label
         >
@@ -40,11 +40,11 @@
         />
     </fieldset>
 
-    <fieldset>
+    <fieldset class="flex grow flex-col">
         <label class="text-sm font-medium text-gray-700" for="content"
             >Content</label
         >
-        <div class="ml-2">
+        <div class="ml-2 grow">
             <Editor id="content" bind:this={editor} />
         </div>
     </fieldset>

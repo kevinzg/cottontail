@@ -15,7 +15,7 @@
             extensions: [StarterKit, Image],
             editorProps: {
                 attributes: {
-                    class: 'prose prose-sm m-2 focus:outline-none',
+                    class: 'h-full prose prose-sm m-2 focus:outline-none',
                 },
             },
             content: '',
@@ -41,7 +41,7 @@
     }
 </script>
 
-<div {id} class="border border-gray-300 bg-white" bind:this={element} />
+<div {id} class="h-full border border-gray-300 bg-white" bind:this={element} />
 
 <style>
     :global(.ProseMirror) {
