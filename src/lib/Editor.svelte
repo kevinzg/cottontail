@@ -34,7 +34,7 @@
         return {
             text: editor.getText(),
             html: editor.getHTML(),
-            json: editor.getJSON(),
+            json: JSON.stringify(editor.getJSON()),
         };
     }
 </script>

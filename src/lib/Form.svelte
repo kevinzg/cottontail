@@ -2,28 +2,23 @@
     import { createEventDispatcher } from 'svelte';
 
     import Editor from './Editor.svelte';
-    import type { ICard } from './types';
+    import type { ICardData } from './types';
 
     const dispatch = createEventDispatcher();
 
-    let front: Editor;
-    let back: Editor;
+    let editor: Editor;
     let title = '';
 
     const submit = () => {
-        const b = back.getContent();
-        const now = new Date();
-        const card: ICard = {
-            uuid: 'new uuid',
+        const content = editor.getContent();
+        const card: ICardData = {
             title,
-            content: b.text,
+            content,
             category: 'default',
             source: {
                 url: window.location.toString(),
                 name: window.document.title,
             },
-            createdAt: now, // TODO: Should be set by the DB
-            updatedAt: now,
         };
         dispatch('save', card);
     };

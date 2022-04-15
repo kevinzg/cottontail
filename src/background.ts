@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
 
 import { Database } from './lib/Database';
-import type { ICard } from './lib/types';
+import type { ICard, ICardData } from './lib/types';
 
 browser.contextMenus.create(
     {
@@ -30,7 +30,15 @@ function executeContentScript(tab: browser.Tabs.Tab) {
 const db = new Database();
 
 browser.runtime.onMessage.addListener(async (message) => {
-    const card: ICard = message.card;
+    const data: ICardData = message.card;
+    const now = new Date();
+    const card: ICard = {
+        ...data,
+        // @ts-ignore
+        uuid: crypto.randomUUID(),
+        createdAt: now,
+        updatedAt: now,
+    };
     const resp = await db.cards.add(card).catch(console.error);
     return resp;
 });
