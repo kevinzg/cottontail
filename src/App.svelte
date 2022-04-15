@@ -4,7 +4,10 @@
 
 <main class="mx-auto my-8 w-96 space-y-4 text-gray-800">
     <h1 class="text-center text-3xl font-bold">Sample text</h1>
-    <img alt="Black dunes" src="https://source.unsplash.com/8xznAGy4HcY/800x400" />
+    <img
+        alt="Black dunes"
+        src="https://source.unsplash.com/8xznAGy4HcY/800x400"
+    />
     <p>
         Aut omnis harum dolore itaque unde. Perspiciatis quis eum eveniet ab.
         Quia voluptatem tempore cumque libero. Et quas assumenda porro
