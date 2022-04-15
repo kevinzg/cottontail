@@ -14,8 +14,6 @@
 
     export let x: number = 0;
     export let y: number = 0;
-    export let w: number = 480;
-    export let h: number = 320;
 
     const startPosition = { x, y };
 
@@ -63,7 +61,7 @@
 </script>
 
 <div
-    style="left: {x}px; top: {y}px; width: {w}px; height: {h}px;"
+    style="left: {x}px; top: {y}px;"
     class="waves window rounded border border-gray-900/20 shadow-lg"
     class:hidden
 >
@@ -73,9 +71,11 @@
     >
         <span>Cottontail</span>
         <!-- TODO: style -->
-        <button class="bg-red-300" on:click={() => dispatch('close')}>Close</button>
+        <button class="bg-red-300" on:click={() => dispatch('close')}>
+            Close
+        </button>
     </div>
-    <div class="overflow-auto py-1 px-2">
+    <div class="window-content overflow-auto py-1 px-2">
         <slot />
     </div>
 </div>
@@ -84,11 +84,12 @@
     .window {
         position: fixed;
         overflow: hidden;
-        resize: horizontal;
         user-select: none;
         z-index: 9999;
+    }
 
+    .window-content {
+        resize: both;
         min-width: 480px;
-        min-height: 540px;
     }
 </style>
