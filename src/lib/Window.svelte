@@ -14,6 +14,7 @@
 
     export let x: number = 0;
     export let y: number = 0;
+    export let hidden: boolean = false;
 
     const startPosition = { x, y };
 
@@ -56,8 +57,6 @@
             sub.unsubscribe();
         };
     });
-
-    export let hidden: boolean = false;
 </script>
 
 <div
@@ -67,12 +66,29 @@
 >
     <div
         bind:this={titleBar}
-        class="title-bar cursor-move border-b border-gray-300 bg-gradient-to-b from-gray-100 to-gray-300 text-center text-sm font-medium text-gray-600"
+        class="title-bar flex cursor-move flex-row items-center justify-between border-b border-gray-300 bg-gradient-to-b from-gray-100 to-gray-300 px-1 py-0.5 text-center text-sm font-medium text-gray-600"
     >
+        <span>🐰</span>
         <span>Cottontail</span>
-        <!-- TODO: style -->
-        <button class="bg-red-300" on:click={() => dispatch('close')}>
-            Close
+        <button
+            on:click={() => dispatch('close')}
+            class="flex h-4 w-4 items-center justify-center rounded-full bg-gray-400 text-white hover:bg-gray-500"
+        >
+            <span class="sr-only">Minimize</span>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="4"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M18 12H6"
+                />
+            </svg>
         </button>
     </div>
     <div class="window-content overflow-auto py-1 px-2">
