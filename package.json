@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build -c vite.pages.config.ts && vite build -c vite.content.config.ts && cd dist/ && zip -r -FS cottontail.zip *",
+        "build": "vite build -c vite.pages.config.ts && vite build -c vite.content.config.ts && cd dist/ && zip -r -FS cottontail.xpi *",
         "build-dev": "vite build -m dev -c vite.pages.config.ts && vite build -m dev -c vite.content.config.ts",
         "preview": "vite preview",
         "check": "svelte-check --tsconfig ./tsconfig.json",
