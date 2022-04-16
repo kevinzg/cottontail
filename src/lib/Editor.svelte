@@ -19,6 +19,7 @@
                 },
             },
             content: '',
+            injectCSS: false,
             onTransaction: () => {
                 // force re-render so `editor.isActive` works as expected
                 // editor = editor;
@@ -42,9 +43,3 @@
 </script>
 
 <div {id} class="h-full border border-gray-300 bg-white" bind:this={element} />
-
-<style>
-    :global(.ProseMirror) {
-        min-height: 8rem;
-    }
-</style>

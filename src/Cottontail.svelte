@@ -13,17 +13,20 @@
     }
 </script>
 
-<Window on:close={hide} {hidden} x={20} y={50}>
-    <Form on:close={hide} on:save />
-</Window>
+<!-- NOTE: This container div is used to apply a CSS reset, see base.css -->
+<div id="container">
+    <Window on:close={hide} {hidden} x={20} y={50}>
+        <Form on:close={hide} on:save />
+    </Window>
 
-{#if hidden}
-    <div class="fixed bottom-5 left-5">
-        <button
-            class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-200"
-            on:click|preventDefault={open}
-        >
-            🐰
-        </button>
-    </div>
-{/if}
+    {#if hidden}
+        <div class="fixed bottom-5 left-5">
+            <button
+                class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-200"
+                on:click|preventDefault={open}
+            >
+                🐰
+            </button>
+        </div>
+    {/if}
+</div>

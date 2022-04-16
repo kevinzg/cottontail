@@ -16,5 +16,6 @@ export default defineConfig({
         },
         outDir: 'dist',
         emptyOutDir: false,
+        cssCodeSplit: false, // HACK: To prevent Vite from injecting CSS
     },
 });

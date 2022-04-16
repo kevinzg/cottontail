@@ -66,7 +66,7 @@
 >
     <div
         bind:this={titleBar}
-        class="title-bar flex cursor-move flex-row items-center justify-between border-b border-gray-300 bg-gradient-to-b from-gray-100 to-gray-300 px-1 py-0.5 text-center text-sm font-medium text-gray-600"
+        class="title-bar flex cursor-move flex-row items-center justify-between border-b border-gray-300 bg-white bg-gradient-to-b from-gray-100 to-gray-300 px-1 py-0.5 text-center text-sm font-medium text-gray-600"
     >
         <span>🐰</span>
         <span>Cottontail</span>
@@ -95,17 +95,3 @@
         <slot />
     </div>
 </div>
-
-<style>
-    .window {
-        position: fixed;
-        overflow: hidden;
-        user-select: none;
-        z-index: 9999;
-    }
-
-    .window-content {
-        resize: both;
-        min-width: 480px;
-    }
-</style>

@@ -1,7 +1,11 @@
 import browser from 'webextension-polyfill';
 
 import Cottontail from './Cottontail.svelte';
-import './main.css';
+
+import BaseCSS from './base.css';
+import TailwindCSS from './tailwind.css';
+import { style as TiptapCSS } from '@tiptap/core/src/style';
+import MainCSS from './main.css';
 
 const get = (): Cottontail => {
     let w = window as any;
@@ -11,11 +15,20 @@ const get = (): Cottontail => {
 
     console.info('Cottontail loading');
 
-    const div = document.createElement('div');
-    document.body.appendChild(div);
+    const div = window.document.createElement('div');
+    window.document.body.appendChild(div);
+
+    const shadowRoot = div.attachShadow({ mode: 'open' });
+
+    const styleElement = window.document.createElement('style');
+    styleElement.textContent = [BaseCSS, TailwindCSS, TiptapCSS, MainCSS].join(
+        '\n'
+    );
+
+    shadowRoot.appendChild(styleElement);
 
     const app = new Cottontail({
-        target: div,
+        target: shadowRoot,
     });
     app.$on('save', async (ev) => {
         const resp = await browser.runtime.sendMessage({ card: ev.detail });
