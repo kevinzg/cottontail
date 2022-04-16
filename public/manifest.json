@@ -10,6 +10,11 @@
     "permissions": ["contextMenus", "activeTab"],
     "browser_action": {
         "default_icon": {},
-        "default_title": "Cottontail"
+        "default_title": "__MSG_extensionName__"
+    },
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "kp8vy8iqoiaykp4xg6gkpq2r8w7gzb77"
+        }
     }
 }
