@@ -25,7 +25,10 @@
     };
 </script>
 
-<form on:submit|preventDefault={submit} class="flex h-full flex-col space-y-1">
+<form
+    on:submit|stopPropagation|preventDefault={submit}
+    class="flex h-full flex-col space-y-1"
+>
     <fieldset class="flex flex-col">
         <label class="text-sm font-medium text-gray-700" for="name">Title</label
         >
@@ -35,6 +38,7 @@
             required
             class="ml-2 border border-gray-300 py-1 px-1 text-sm text-gray-800"
             bind:value={title}
+            on:keydown|stopPropagation
         />
     </fieldset>
 
@@ -48,6 +52,7 @@
             class="ml-2 grow border border-gray-300 py-1 px-1 font-mono text-sm text-gray-800"
             rows="5"
             bind:value={content}
+            on:keydown|stopPropagation
         />
     </fieldset>
 
@@ -61,6 +66,7 @@
             placeholder="default"
             class="ml-2 border border-gray-300 py-1 px-1 text-sm text-gray-800"
             bind:value={category}
+            on:keydown|stopPropagation
         />
     </fieldset>
 
@@ -75,6 +81,7 @@
                 placeholder="Name"
                 class="grow border border-gray-300 py-1 px-1 text-sm text-gray-800"
                 bind:value={sourceName}
+                on:keydown|stopPropagation
             />
             <input
                 id="sourceUrl"
@@ -82,6 +89,7 @@
                 placeholder="URL"
                 class="border border-gray-300 py-1 px-1 text-sm text-gray-800"
                 bind:value={sourceUrl}
+                on:keydown|stopPropagation
             />
         </div>
     </fieldset>
