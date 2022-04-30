@@ -1,22 +1,20 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
 
-    import Editor from './Editor.svelte';
     import type { ICardData } from './types';
 
     const dispatch = createEventDispatcher();
 
-    let editor: Editor;
     let title = '';
     let category = 'default';
     let sourceUrl = window.location.toString();
     let sourceName = window.document.title;
+    let content = '';
 
     const submit = () => {
-        const content = editor.getContent();
         const card: ICardData = {
             title,
-            content,
+            content: { text: content, html: '', json: '{}' },
             category: category || 'default',
             source: {
                 url: sourceUrl,
@@ -35,7 +33,7 @@
             id="name"
             name="name"
             required
-            class="ml-2 border border-gray-300 py-1 px-1 text-sm text-gray-800 placeholder:text-sm placeholder:italic placeholder:text-gray-400"
+            class="ml-2 border border-gray-300 py-1 px-1 text-sm text-gray-800"
             bind:value={title}
         />
     </fieldset>
@@ -44,9 +42,13 @@
         <label class="text-sm font-medium text-gray-700" for="content"
             >Content</label
         >
-        <div class="ml-2 grow">
-            <Editor id="content" bind:this={editor} />
-        </div>
+        <textarea
+            id="content"
+            name="content"
+            class="ml-2 grow border border-gray-300 py-1 px-1 font-mono text-sm text-gray-800"
+            rows="5"
+            bind:value={content}
+        />
     </fieldset>
 
     <fieldset class="flex flex-col">
@@ -57,7 +59,7 @@
             id="category"
             name="category"
             placeholder="default"
-            class="ml-2 border border-gray-300 py-1 px-1 text-sm text-gray-800 placeholder:text-sm placeholder:italic placeholder:text-gray-400"
+            class="ml-2 border border-gray-300 py-1 px-1 text-sm text-gray-800"
             bind:value={category}
         />
     </fieldset>
@@ -71,14 +73,14 @@
                 id="sourceName"
                 name="sourceName"
                 placeholder="Name"
-                class="grow border border-gray-300 py-1 px-1 text-sm text-gray-800 placeholder:text-sm placeholder:italic placeholder:text-gray-400"
+                class="grow border border-gray-300 py-1 px-1 text-sm text-gray-800"
                 bind:value={sourceName}
             />
             <input
                 id="sourceUrl"
                 name="sourceUrl"
                 placeholder="URL"
-                class="border border-gray-300 py-1 px-1 text-sm text-gray-800 placeholder:text-sm placeholder:italic placeholder:text-gray-400"
+                class="border border-gray-300 py-1 px-1 text-sm text-gray-800"
                 bind:value={sourceUrl}
             />
         </div>

@@ -4,7 +4,6 @@ import Cottontail from './Cottontail.svelte';
 
 import BaseCSS from './base.css';
 import TailwindCSS from './tailwind.css';
-import { style as TiptapCSS } from '@tiptap/core/src/style';
 import MainCSS from './main.css';
 
 const get = (): Cottontail => {
@@ -21,9 +20,7 @@ const get = (): Cottontail => {
     const shadowRoot = div.attachShadow({ mode: 'open' });
 
     const styleElement = window.document.createElement('style');
-    styleElement.textContent = [BaseCSS, TailwindCSS, TiptapCSS, MainCSS].join(
-        '\n'
-    );
+    styleElement.textContent = [BaseCSS, TailwindCSS, MainCSS].join('\n');
 
     shadowRoot.appendChild(styleElement);
 
