@@ -4,8 +4,8 @@ export interface ICard {
     title: string;
     content: {
         text: string; // Plain text
-        html: string; // HTML rich text
-        json: string; // Tiptap JSON format
+        html?: string; // HTML rich text
+        json?: string; // Tiptap JSON format
     };
     category: string;
     source: {
