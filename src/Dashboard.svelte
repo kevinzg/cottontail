@@ -5,6 +5,7 @@
     import type { ICard } from './lib/types';
 
     const db = new Database();
+    (window as any).db = db;
 
     // @ts-ignore
     let cards = liveQuery<ICard[]>(() => db.cards.toArray()) as Readable<
