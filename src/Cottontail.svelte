@@ -49,7 +49,7 @@
     </Window>
 
     {#if hidden}
-        <div class="fixed bottom-5 left-5">
+        <div class="fixed bottom-5 left-5 z-[9999]">
             <button
                 class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-200"
                 on:click|preventDefault={open}
