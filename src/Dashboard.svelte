@@ -41,6 +41,7 @@
                                     Source:
                                 </span>
                                 <a
+                                    rel="noreferrer"
                                     target="_blank"
                                     class="text-gray-500 underline"
                                     href={card.source.url}
