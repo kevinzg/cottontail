@@ -40,7 +40,7 @@
                 {/each}
             </ul>
             <button
-                class="bg-blue-300 rounded"
+                class="rounded bg-blue-300"
                 on:click={() => (path = 'form')}
             >
                 New card
