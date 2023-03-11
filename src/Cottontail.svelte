@@ -10,7 +10,7 @@
     let hidden = false;
     export let path: 'form' | 'list' = 'form';
 
-    let cards: ICardData[] = [];
+    let localCards: ICardData[] = [];
 
     export function open() {
         hidden = false;
@@ -20,10 +20,10 @@
         hidden = true;
     }
 
-    function save(ev: CustomEvent) {
+    function save(ev: CustomEvent<ICardData>) {
         path = 'list';
-        cards.push(ev.detail);
-        cards = cards;
+        localCards.push(ev.detail);
+        localCards = localCards;
         dispatch('save', ev.detail);
     }
 </script>
@@ -35,7 +35,7 @@
             <Form on:close={hide} on:save={save} />
         {:else if path === 'list'}
             <ul>
-                {#each cards as card}
+                {#each localCards as card}
                     <li>{card.title}</li>
                 {/each}
             </ul>
