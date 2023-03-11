@@ -1,8 +1,24 @@
 <script lang="ts">
+    import { Database } from './lib/Database';
+    import type { ICard, ICardData } from './lib/types';
     import Cottontail from './Cottontail.svelte';
     import Dashboard from './Dashboard.svelte';
 
     let tab: 'sample' | 'dashboard' = 'dashboard';
+
+    const db = new Database();
+
+    async function save(data: ICardData) {
+        const now = new Date();
+        const card: ICard = {
+            ...data,
+            // @ts-ignore
+            uuid: crypto.randomUUID(),
+            createdAt: now,
+            updatedAt: now,
+        };
+        await db.cards.add(card).catch(console.error);
+    }
 </script>
 
 <div class="mx-auto w-fit bg-gray-50 py-1">
@@ -52,7 +68,7 @@
         </p>
     </main>
 
-    <Cottontail on:save={(ev) => console.log('save', ev.detail)} />
+    <Cottontail on:save={(ev) => save(ev.detail)} />
 {:else if tab === 'dashboard'}
     <Dashboard />
 {/if}
