@@ -77,7 +77,7 @@
             <span class="sr-only">Minimize</span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-3 w-3"
+                class="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -86,7 +86,7 @@
                 <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    d="M18 12H6"
+                    d="M7 12H17"
                 />
             </svg>
         </button>
