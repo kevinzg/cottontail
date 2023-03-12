@@ -106,7 +106,9 @@ const ensureAnkiDeckExists = (() => {
     return async (deck: string) => {
         const decks = await starterDecks;
         if (decks.has(deck)) return;
-        await anki.createDeck(deck);
+        await anki
+            .createDeck(deck)
+            .then((id) => console.log('Deck created', deck, id));
         return;
     };
 })();
