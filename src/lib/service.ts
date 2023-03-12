@@ -19,17 +19,12 @@ export async function saveCard(data: IFlashcardData) {
     };
     return db.cards
         .put(card)
-        .then((id) => {
-            console.log('Card saved with id', id);
-            return anki.addNote(makeAnkiNote(card));
-        })
-        .then((resp) => {
-            if (resp.error !== null) {
-                throw new Error('Anki card failed to save: ' + resp.error);
-            }
-            const ankiId = resp.result;
-            console.log('Anki response for card', card.uuid, ankiId);
-        })
+        .then((id) => console.log('Card saved with id', id))
+        .then(() => ensureAnkiPermission())
+        .then(() => anki.addNote(makeAnkiNote(card)))
+        .then((ankiId) =>
+            console.log('Anki response for card', card.uuid, ankiId)
+        )
         .catch(console.error);
 }
 
@@ -81,3 +76,17 @@ function getFields(card: IFlashcard): Pick<AnkiNote, 'modelName' | 'fields'> {
             };
     }
 }
+
+const ensureAnkiPermission = (() => {
+    let permissionGranted = false;
+    return async () => {
+        if (permissionGranted) return;
+        anki.requestPermission().then((resp) => {
+            console.log('Anki permission response', resp);
+            if (resp.permission !== 'granted') {
+                throw new Error('Permission not granted');
+            }
+            permissionGranted = true;
+        });
+    };
+})();
