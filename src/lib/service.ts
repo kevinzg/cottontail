@@ -136,7 +136,8 @@ const ensureAnkiDeckExists = (() => {
         if (decks.has(deck)) return;
         await anki
             .createDeck(deck)
-            .then((id) => console.log('Deck created', deck, id));
+            .then((id) => console.log('Deck created', deck, id))
+            .then(() => decks.add(deck));
         return;
     };
 })();
