@@ -84,6 +84,15 @@
         const data = JSON.stringify($cards, null, 4);
         downloadTextFile(data, `${getFilename()}.json`, 'application/json');
     }
+
+    function deleteCard(card: IFlashcard) {
+        const confirmed = window.confirm(
+            `Are you sure you want to delete card: ${card.front}?`
+        );
+        if (!confirmed) return;
+        // TODO: Delete from Anki? Have a tombstone instead?
+        db.cards.delete(card.uuid).catch(console.error);
+    }
 </script>
 
 <div class="flex flex-row px-3">
@@ -143,6 +152,17 @@
                             <span>
                                 {card.createdAt.toDateString()}
                                 {card.createdAt.toLocaleTimeString()}
+                            </span>
+                        </div>
+                        <div>
+                            <span>
+                                <!-- TODO: Don't create an event listener for each card -->
+                                <button
+                                    on:click={() => deleteCard(card)}
+                                    class="text-red-900 underline"
+                                >
+                                    Delete
+                                </button>
                             </span>
                         </div>
                     </div>
