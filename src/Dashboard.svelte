@@ -2,14 +2,16 @@
     import type { IFlashcard } from './lib/types';
     import * as service from './lib/service';
 
+    function needsSync(c: IFlashcard) {
+        return !c.ankiVersion || c.updatedAt > c.ankiVersion;
+    }
+
     let cards = service.allCardsStore();
 
     let pendingSyncCards: number;
     $: {
         if ($cards) {
-            pendingSyncCards = $cards.filter(
-                (c) => !c.ankiVersion || c.updatedAt > c.ankiVersion
-            ).length;
+            pendingSyncCards = $cards.filter((c) => needsSync(c)).length;
         }
     }
 
@@ -94,6 +96,22 @@
         if (!confirmed) return;
         service.deleteCard(card).catch(console.error);
     }
+
+    function syncCard(card: IFlashcard) {
+        service.syncToAnki(card).catch(console.error);
+    }
+
+    async function syncAll() {
+        const pending = $cards.filter((c) => needsSync(c));
+        try {
+            // TODO: Do some of these concurrently
+            for (const card of pending) {
+                await service.syncToAnki(card);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
 </script>
 
 <div class="flex flex-row px-3">
@@ -110,10 +128,17 @@
 
 <hr />
 
+<!-- TODO: Display sync progress/errors -->
+<div class="ml-4 mt-2">
+    {pendingSyncCards} card(s) need(s) to be synced.
+    <button on:click={syncAll} class="underline">Sync now</button>
+</div>
+
 <!-- TODO: Pagination -->
-<ul class="ml-4 mt-4 space-y-3 py-2 px-3">
+<ul class="ml-4 mt-2 space-y-3 py-2 px-3">
     {#if $cards}
         {#each $cards as card (card.uuid)}
+            {@const synced = !needsSync(card)}
             <li>
                 <details class="space-y-1">
                     <summary class="cursor-pointer">
@@ -155,12 +180,31 @@
                                 {card.createdAt.toLocaleTimeString()}
                             </span>
                         </div>
-                        <div>
+                        <!-- TODO: Don't create an event listener for each card -->
+                        <div class="space-x-2">
                             <span>
-                                <!-- TODO: Don't create an event listener for each card -->
+                                {#if synced}
+                                    ✅ Synced
+                                {:else}
+                                    ❌ Not synced
+                                {/if}
+                            </span>
+                            <span>
+                                <button
+                                    on:click={() => syncCard(card)}
+                                    class="text-gray-700 underline"
+                                >
+                                    {#if synced}
+                                        Force sync
+                                    {:else}
+                                        Sync card
+                                    {/if}
+                                </button>
+                            </span>
+                            <span>
                                 <button
                                     on:click={() => deleteCard(card)}
-                                    class="text-red-900 underline"
+                                    class="text-red-800 underline"
                                 >
                                     Delete
                                 </button>
