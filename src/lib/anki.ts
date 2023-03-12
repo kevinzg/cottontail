@@ -2,7 +2,7 @@
 
 interface AnkiOkResponse<T = any> {
     result: T;
-    error: null;
+    error?: null;
 }
 
 interface AnkiErrorResponse {
@@ -31,16 +31,22 @@ export interface AnkiNote {
     // picture: []any;
 }
 
-export default class Anki {
-    async getDecks(): Promise<string[]> {
-        const response = await this.request<string[]>({
-            action: 'deckNames',
-            version: 6,
-        });
-        return response.result || [];
-    }
+export interface AnkiPermissionGrantedResponse {
+    permission: 'granted';
+    version: number;
+    requireApiKey: boolean;
+}
 
-    async addNote(note: AnkiNote): Promise<AnkiResponse<number>> {
+export interface AnkiPermissionDeniedResponse {
+    permission: 'denied';
+}
+
+type AnkiPermissionResponse =
+    | AnkiPermissionGrantedResponse
+    | AnkiPermissionDeniedResponse;
+
+export default class Anki {
+    async addNote(note: AnkiNote): Promise<number> {
         return await this.request<any>({
             action: 'addNote',
             version: 6,
@@ -50,27 +56,31 @@ export default class Anki {
         });
     }
 
-    async requestPermission(): Promise<string[]> {
-        const response = await this.request<string[]>({
+    async requestPermission(): Promise<AnkiPermissionResponse> {
+        return await this.request<AnkiPermissionResponse>({
             action: 'requestPermission',
             version: 6,
         });
-        return response.result || [];
     }
 
-    private async request<T>(body: any): Promise<AnkiResponse<T>> {
+    // TODO: handle timeouts?
+    private async request<T>(body: any): Promise<T> {
         return window
             .fetch('http://localhost:8765', {
                 method: 'POST',
                 body: JSON.stringify(body),
+                mode: 'cors',
             })
             .then((resp) => resp.json())
+            .then((data: AnkiResponse<T>) => {
+                if (data.error != null) {
+                    throw new Error('Anki connect error: ' + data.error);
+                }
+                return data.result;
+            })
             .catch((err) => {
                 console.error('Anki error', err);
-                return {
-                    result: null,
-                    error: '' + err,
-                };
+                throw err;
             });
     }
 }
