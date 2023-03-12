@@ -26,7 +26,8 @@
         } else if (kind === 'cloze') {
             labelFront = 'Text';
             labelBack = 'Extra';
-            placeholderFront = '{{c2::Canberra::city}} was founded in {{c1::1913::year}}';
+            placeholderFront =
+                '{{c2::Canberra::city}} was founded in {{c1::1913::year}}';
             placeholderBack = '';
         }
     }
@@ -81,7 +82,7 @@
                 on:keydown|stopPropagation
             >
                 <option value="basic">Basic</option>
-                <option value="reverse">Reverse</option>
+                <option value="reverse">Reversable</option>
                 <option value="cloze">Cloze</option>
             </select>
         </fieldset>
@@ -96,6 +97,7 @@
             name="ct-front"
             class="ml-2 grow border border-gray-300 bg-white py-1 px-1 font-mono text-sm"
             rows="3"
+            required
             bind:value={front}
             on:keydown|stopPropagation
             placeholder={placeholderFront}
