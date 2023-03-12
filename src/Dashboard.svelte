@@ -90,12 +90,12 @@
     <h1 class="flex-grow justify-center py-2 text-xl font-bold text-gray-800">
         Cottontail Dashboard
     </h1>
-    <button on:click={exportCSV} class="btn justify-center"
-        >Export as CSV</button
-    >
-    <button on:click={exportJSON} class="btn justify-center"
-        >Export as JSON</button
-    >
+    <button on:click={exportCSV} class="btn justify-center">
+        Export as CSV
+    </button>
+    <button on:click={exportJSON} class="btn justify-center">
+        Export as JSON
+    </button>
 </div>
 
 <hr />
@@ -120,9 +120,9 @@
                         {card.back}
                     </div>
 
-                    <div class="ml-6">
+                    <div class="ml-6 text-sm">
                         {#if card.source.url}
-                            <div class="text-sm">
+                            <div>
                                 <span class="font-medium text-gray-700">
                                     Source:
                                 </span>
@@ -136,14 +136,14 @@
                                 </a>
                             </div>
                         {/if}
-                        <div class="text-sm">
-                            <span class="font-medium text-gray-700"
-                                >Created:</span
-                            >
-                            <span
-                                >{card.createdAt.toDateString()}
-                                {card.createdAt.toLocaleTimeString()}</span
-                            >
+                        <div>
+                            <span class="font-medium text-gray-700">
+                                Created:
+                            </span>
+                            <span>
+                                {card.createdAt.toDateString()}
+                                {card.createdAt.toLocaleTimeString()}
+                            </span>
                         </div>
                     </div>
                 </details>
