@@ -29,8 +29,10 @@ export async function saveCard(data: { card: IFlashcardData }) {
         })
         .then((ankiId) => {
             console.log('Anki note created for card', card.uuid, ankiId);
+            // TODO: Take care of race conditions
             return db.cards.update(card.uuid, {
                 ankiId,
+                ankiVersion: card.updatedAt,
             });
         })
         .catch(console.error);

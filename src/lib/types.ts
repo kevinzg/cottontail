@@ -13,6 +13,7 @@ export interface IFlashcard {
     createdAt: Date;
     updatedAt: Date;
     ankiId?: number;
+    ankiVersion?: Date; // Should match updatedAt timestamp
 }
 
 export type IFlashcardData = Omit<

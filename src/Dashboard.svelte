@@ -71,6 +71,7 @@
             createdAt: (card) => card.createdAt.toISOString(),
             updatedAt: (card) => card.updatedAt.toISOString(),
             ankiId: (card) => `${card.ankiId ?? ''}`,
+            ankiVersion: (card) => `${card.ankiVersion?.toISOString() ?? ''}`,
         };
         const header = fields.join(',');
         const rows = $cards
