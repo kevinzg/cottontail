@@ -63,6 +63,23 @@ export default class Anki {
         });
     }
 
+    async getDecks(): Promise<string[]> {
+        return await this.request<string[]>({
+            action: 'deckNames',
+            version: 6,
+        });
+    }
+
+    async createDeck(deck: string): Promise<number> {
+        return await this.request<number>({
+            action: 'createDeck',
+            version: 6,
+            params: {
+                deck,
+            },
+        });
+    }
+
     // TODO: handle timeouts?
     private async request<T>(body: any): Promise<T> {
         return window
