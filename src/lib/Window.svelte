@@ -61,7 +61,7 @@
 
 <div
     style="left: {x}px; top: {y}px;"
-    class="waves window rounded border border-gray-300 shadow-lg"
+    class="pattern-bg window rounded border border-gray-300 shadow-lg"
     class:hidden
 >
     <div
