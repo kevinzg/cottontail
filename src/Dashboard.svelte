@@ -58,12 +58,14 @@
             'ankiId',
         ];
         const escape = (value: string) => `"${value.replace(/"/g, '""')}"`;
+        const maybeEscape = (value: string) =>
+            value.includes('"') ? escape(value) : value;
         const format: Record<CSVFields, (card: IFlashcard) => string> = {
             uuid: (card) => card.uuid,
             kind: (card) => card.kind,
-            front: (card) => card.front,
-            back: (card) => card.back,
-            deck: (card) => card.deck,
+            front: (card) => escape(card.front),
+            back: (card) => escape(card.back),
+            deck: (card) => maybeEscape(card.deck),
             sourceURL: (card) => escape(card.source.url),
             sourceName: (card) => escape(card.source.title),
             createdAt: (card) => card.createdAt.toISOString(),
