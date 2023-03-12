@@ -12,6 +12,7 @@ export interface IFlashcard {
     };
     createdAt: Date;
     updatedAt: Date;
+    ankiId?: number;
 }
 
 export type IFlashcardData = Omit<

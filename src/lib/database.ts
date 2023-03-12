@@ -9,7 +9,7 @@ export class Database extends Dexie {
         super('CottontailDB');
 
         this.version(1).stores({
-            cards: '&uuid',
+            cards: '&uuid,ankiId',
         });
     }
 }

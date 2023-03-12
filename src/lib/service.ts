@@ -26,9 +26,12 @@ export async function saveCard(data: IFlashcardData) {
             await ensureAnkiDeckExists(note.deckName);
             return anki.addNote(note);
         })
-        .then((ankiId) =>
-            console.log('Anki response for card', card.uuid, ankiId)
-        )
+        .then((ankiId) => {
+            console.log('Anki note created for card', card.uuid, ankiId);
+            return db.cards.update(card.uuid, {
+                ankiId,
+            });
+        })
         .catch(console.error);
 }
 
