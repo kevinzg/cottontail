@@ -1,23 +1,13 @@
 <script lang="ts">
-    import { Database } from './lib/database';
-    import type { ICard, ICardData } from './lib/types';
+    import type { IFlashcardData } from './lib/types';
+    import * as service from './lib/service';
     import Cottontail from './Cottontail.svelte';
     import Dashboard from './Dashboard.svelte';
 
-    let tab: 'sample' | 'dashboard' = 'dashboard';
+    let tab: 'sample' | 'dashboard' = 'sample';
 
-    const db = new Database();
-
-    async function save(data: ICardData) {
-        const now = new Date();
-        const card: ICard = {
-            ...data,
-            // @ts-ignore
-            uuid: crypto.randomUUID(),
-            createdAt: now,
-            updatedAt: now,
-        };
-        await db.cards.add(card).catch(console.error);
+    async function save(ev: CustomEvent<IFlashcardData>) {
+        service.saveCard(ev.detail);
     }
 </script>
 
@@ -68,7 +58,7 @@
         </p>
     </main>
 
-    <Cottontail on:save={(ev) => save(ev.detail)} />
+    <Cottontail on:save={save} />
 {:else if tab === 'dashboard'}
     <Dashboard />
 {/if}
