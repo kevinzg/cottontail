@@ -27,10 +27,12 @@ function executeContentScript(tab: browser.Tabs.Tab) {
         .catch(console.error);
 }
 
+// TODO: Add type-safety to this
 /**
  * Listens to messages sent by the content script.
  */
 browser.runtime.onMessage.addListener((message) => {
+    console.log('Got message', message);
     switch (message.type) {
         case 'save-card':
             return service.saveCard(message.payload);

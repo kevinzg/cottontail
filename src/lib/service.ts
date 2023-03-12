@@ -10,10 +10,10 @@ const anki = new Anki();
 const BASIC_REVERSABLE_CARD = 'Basic (optional reversed card)';
 const CLOZE_CARD = 'Cloze';
 
-export async function saveCard(data: IFlashcardData) {
+export async function saveCard(data: { card: IFlashcardData }) {
     const now = new Date();
     const card: IFlashcard = {
-        ...data,
+        ...data.card,
         uuid: randomUID(now),
         createdAt: now,
         updatedAt: now,

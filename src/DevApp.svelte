@@ -7,7 +7,7 @@
     let tab: 'sample' | 'dashboard' = 'sample';
 
     async function save(ev: CustomEvent<IFlashcardData>) {
-        service.saveCard(ev.detail);
+        service.saveCard({ card: ev.detail });
     }
 </script>
 
