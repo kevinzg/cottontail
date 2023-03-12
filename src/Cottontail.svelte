@@ -32,7 +32,11 @@
 <div id="container">
     <Window on:close={hide} {hidden} x={20} y={50}>
         {#if path === 'form'}
-            <Form on:close={hide} on:save={save} />
+            <Form
+                on:close={hide}
+                on:cancel={() => (path = 'list')}
+                on:save={save}
+            />
         {:else if path === 'list'}
             <ul>
                 {#each localCards as card}
