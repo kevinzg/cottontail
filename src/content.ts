@@ -1,10 +1,11 @@
 import browser from 'webextension-polyfill';
 
+import type { SaveCardMessage } from './lib/types';
 import Cottontail from './Cottontail.svelte';
 
-import BaseCSS from './base.css';
-import TailwindCSS from './tailwind.css';
-import MainCSS from './main.css';
+import BaseCSS from './base.css?inline';
+import TailwindCSS from './tailwind.css?inline';
+import MainCSS from './main.css?inline';
 
 const get = (): Cottontail => {
     let w = window as any;
@@ -27,9 +28,16 @@ const get = (): Cottontail => {
     const app = new Cottontail({
         target: shadowRoot,
     });
-    app.$on('save', async (ev) => {
-        const resp = await browser.runtime.sendMessage({ card: ev.detail });
-        console.log('Cottontail', resp);
+    app.$on('save', (ev) => {
+        browser.runtime
+            .sendMessage({
+                type: 'save-card',
+                payload: {
+                    card: ev.detail,
+                },
+            } satisfies SaveCardMessage)
+            .then((resp) => console.log('[Cottontail] Card saved', resp))
+            .catch((err) => console.error('[Cottontail] Error', err));
     });
 
     w.__cottontail__ = app;
@@ -39,5 +47,5 @@ const get = (): Cottontail => {
 try {
     get().open();
 } catch (err) {
-    console.error(err);
+    console.error('[Cottontail] App error', err);
 }

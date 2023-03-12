@@ -1,7 +1,8 @@
 import browser from 'webextension-polyfill';
+import Anki, { type AnkiNote } from './lib/anki';
 
 import { Database } from './lib/Database';
-import type { ICard, ICardData } from './lib/types';
+import type { IFlashcard, IFlashcardData } from './lib/types';
 
 browser.contextMenus.create(
     {
@@ -13,7 +14,9 @@ browser.contextMenus.create(
         },
     },
     () => {
-        browser.runtime.lastError && console.error(browser.runtime.lastError);
+        if (browser.runtime.lastError) {
+            console.error(browser.runtime.lastError);
+        }
     }
 );
 
@@ -28,17 +31,104 @@ function executeContentScript(tab: browser.Tabs.Tab) {
 }
 
 const db = new Database();
+const anki = new Anki();
 
-browser.runtime.onMessage.addListener(async (message) => {
-    const data: ICardData = message.card;
+/**
+ * Listens to messages sent by the content script
+ */
+browser.runtime.onMessage.addListener((message) => {
+    switch (message.type) {
+        case 'save-card':
+            return saveCard(message.payload);
+        default:
+            console.log('Unhandled message type', message);
+    }
+});
+
+const BASIC_REVERSABLE_CARD = 'Basic (optional reversed card)';
+const CLOZE_CARD = 'Cloze';
+
+async function saveCard(data: IFlashcardData) {
     const now = new Date();
-    const card: ICard = {
+    const card: IFlashcard = {
         ...data,
-        // @ts-ignore
         uuid: crypto.randomUUID(),
         createdAt: now,
         updatedAt: now,
     };
-    const resp = await db.cards.add(card).catch(console.error);
-    return resp;
-});
+    return db.cards
+        .put(card)
+        .then((id) => {
+            console.log('Card saved with id', id);
+            return anki.addNote(makeAnkiNote(card));
+        })
+        .then((resp) => {
+            if (resp.error !== null) {
+                throw new Error('Anki card failed to save: ' + resp.error);
+            }
+            const ankiId = resp.result;
+            console.log('Anki response for card', card.uuid, ankiId);
+        })
+        .catch(console.error);
+}
+
+function makeAnkiNote(card: IFlashcard): AnkiNote {
+    const { modelName, fields } = getFields(card);
+    return {
+        deckName: `CT::${card.deck}`,
+        modelName,
+        fields,
+        options: {
+            allowDuplicate: false,
+            duplicateScope: 'deck',
+            duplicateScopeOptions: {
+                checkChildren: false,
+                checkAllModels: false,
+            },
+        },
+        tags: ['cottontail'],
+    };
+}
+
+function getFields(card: IFlashcard): Pick<AnkiNote, 'modelName' | 'fields'> {
+    switch (card.kind) {
+        case 'basic':
+            return {
+                modelName: BASIC_REVERSABLE_CARD,
+                fields: {
+                    Front: card.front,
+                    Back: card.back,
+                    'Add Reverse': '',
+                },
+            };
+        case 'reverse':
+            return {
+                modelName: BASIC_REVERSABLE_CARD,
+                fields: {
+                    Front: card.front,
+                    Back: card.back,
+                    'Add Reverse': '1',
+                },
+            };
+        case 'cloze':
+            return {
+                modelName: CLOZE_CARD,
+                fields: {
+                    Text: card.front,
+                    Extra: card.back,
+                },
+            };
+    }
+}
+
+// const ensurePermission = (() => {
+//     let permissionGranted = false;
+//     return () => {
+//         if (permissionGranted) return;
+//         anki.requestPermission()
+//         .then((resp) => {
+//             if ()
+//             permissionGranted = true;
+//         })
+//     };
+// })
