@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill';
 
-import type { SaveCardMessage } from './lib/types';
+import type { IFlashcardData, SaveCardMessage } from './lib/types';
 import Cottontail from './Cottontail.svelte';
 
 import BaseCSS from './base.css?inline';
@@ -29,11 +29,12 @@ const get = (): Cottontail => {
         target: shadowRoot,
     });
     app.$on('save', (ev) => {
+        const card: IFlashcardData = ev.detail;
         browser.runtime
             .sendMessage({
                 type: 'save-card',
                 payload: {
-                    card: ev.detail,
+                    card,
                 },
             } satisfies SaveCardMessage)
             .then((resp) => console.log('[Cottontail] Card saved', resp))
