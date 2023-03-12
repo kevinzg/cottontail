@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Database } from './lib/Database';
+    import { Database } from './lib/database';
     import type { ICard, ICardData } from './lib/types';
     import Cottontail from './Cottontail.svelte';
     import Dashboard from './Dashboard.svelte';

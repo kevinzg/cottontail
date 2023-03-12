@@ -1,7 +1,7 @@
 <script lang="ts">
     import { liveQuery } from 'dexie';
     import type { Readable } from 'svelte/store';
-    import { Database } from './lib/Database';
+    import { Database } from './lib/database';
     import type { ICard } from './lib/types';
 
     const db = new Database();

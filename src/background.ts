@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
 import Anki, { type AnkiNote } from './lib/anki';
 
-import { Database } from './lib/Database';
+import { Database } from './lib/database';
 import type { IFlashcard, IFlashcardData } from './lib/types';
 
 browser.contextMenus.create(
