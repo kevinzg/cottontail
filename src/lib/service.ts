@@ -21,7 +21,11 @@ export async function saveCard(data: IFlashcardData) {
         .put(card)
         .then((id) => console.log('Card saved with id', id))
         .then(() => ensureAnkiPermission())
-        .then(() => anki.addNote(makeAnkiNote(card)))
+        .then(async () => {
+            const note = makeAnkiNote(card);
+            await ensureAnkiDeckExists(note.deckName);
+            return anki.addNote(note);
+        })
         .then((ankiId) =>
             console.log('Anki response for card', card.uuid, ankiId)
         )
@@ -88,5 +92,21 @@ const ensureAnkiPermission = (() => {
             }
             permissionGranted = true;
         });
+    };
+})();
+
+const ensureAnkiDeckExists = (() => {
+    let starterDecks: Promise<Set<string>> = anki
+        .getDecks()
+        .then((decks) => new Set(decks))
+        .catch((err) => {
+            console.warn('Could not get decks', err);
+            return new Set();
+        });
+    return async (deck: string) => {
+        const decks = await starterDecks;
+        if (decks.has(deck)) return;
+        await anki.createDeck(deck);
+        return;
     };
 })();
