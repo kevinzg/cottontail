@@ -2,14 +2,14 @@
     import { liveQuery } from 'dexie';
     import type { Readable } from 'svelte/store';
     import { Database } from './lib/database';
-    import type { ICard } from './lib/types';
+    import type { IFlashcard } from './lib/types';
 
     const db = new Database();
     (window as any).db = db;
 
     // @ts-ignore
-    let cards = liveQuery<ICard[]>(() => db.cards.toArray()) as Readable<
-        ICard[]
+    let cards = liveQuery<IFlashcard[]>(() => db.cards.toArray()) as Readable<
+        IFlashcard[]
     >;
 
     function downloadTextFile(
@@ -42,29 +42,33 @@
 
     function exportCSV() {
         type CSVFields =
-            | Exclude<keyof ICard, 'source' | 'id'>
+            | Exclude<keyof IFlashcard, 'source' | 'id'>
             | 'sourceURL'
             | 'sourceName';
         const fields: Array<CSVFields> = [
             'uuid',
-            'title',
-            'content',
-            'category',
+            'kind',
+            'front',
+            'back',
+            'deck',
             'sourceURL',
             'sourceName',
             'createdAt',
             'updatedAt',
+            'ankiId',
         ];
         const escape = (value: string) => `"${value.replace(/"/g, '""')}"`;
-        const format: Record<CSVFields, (card: ICard) => string> = {
+        const format: Record<CSVFields, (card: IFlashcard) => string> = {
             uuid: (card) => card.uuid,
-            title: (card) => escape(card.title),
-            content: (card) => escape(card.content.text),
-            category: (card) => card.category,
+            kind: (card) => card.kind,
+            front: (card) => card.front,
+            back: (card) => card.back,
+            deck: (card) => card.deck,
             sourceURL: (card) => escape(card.source.url),
-            sourceName: (card) => escape(card.source.name),
+            sourceName: (card) => escape(card.source.title),
             createdAt: (card) => card.createdAt.toISOString(),
             updatedAt: (card) => card.updatedAt.toISOString(),
+            ankiId: (card) => `${card.ankiId ?? ''}`,
         };
         const header = fields.join(',');
         const rows = $cards
@@ -97,21 +101,21 @@
 <!-- TODO: Pagination -->
 <ul class="ml-4 mt-4 space-y-3 py-2 px-3">
     {#if $cards}
-        {#each $cards as card (card.id)}
+        {#each $cards as card (card.uuid)}
             <li>
                 <details class="space-y-1">
                     <summary class="cursor-pointer">
                         <h4 class="inline text-lg font-medium text-gray-800">
-                            {card.title}
+                            {card.front}
                         </h4>
                         <span class="ml-1 text-sm font-medium text-gray-500">
-                            {card.category}
+                            {card.deck}
                         </span>
                     </summary>
                     <div
                         class="mx-6 whitespace-pre-wrap border border-gray-200 bg-gray-100 px-2 py-1 font-mono text-sm text-gray-800"
                     >
-                        {card.content.text}
+                        {card.back}
                     </div>
 
                     <div class="ml-6">
@@ -126,7 +130,7 @@
                                     class="text-gray-500 underline"
                                     href={card.source.url}
                                 >
-                                    {card.source.name}
+                                    {card.source.title}
                                 </a>
                             </div>
                         {/if}
