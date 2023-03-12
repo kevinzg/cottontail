@@ -1,7 +1,7 @@
-export type UUID = string;
+import type { UID } from './uid';
 
 export interface IFlashcard {
-    uuid: UUID;
+    uuid: UID;
     kind: 'basic' | 'reverse' | 'cloze';
     front: string;
     back: string;

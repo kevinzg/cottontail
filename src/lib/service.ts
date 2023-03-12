@@ -2,6 +2,7 @@ import Anki, { type AnkiNote } from './anki';
 
 import { Database } from './database';
 import type { IFlashcard, IFlashcardData } from './types';
+import { randomUID } from './uid';
 
 const db = new Database();
 const anki = new Anki();
@@ -13,7 +14,7 @@ export async function saveCard(data: IFlashcardData) {
     const now = new Date();
     const card: IFlashcard = {
         ...data,
-        uuid: crypto.randomUUID(),
+        uuid: randomUID(now),
         createdAt: now,
         updatedAt: now,
     };

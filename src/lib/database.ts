@@ -1,9 +1,9 @@
 import { Dexie } from 'dexie';
 
-import type { IFlashcard, UUID } from './types';
+import type { IFlashcard } from './types';
 
 export class Database extends Dexie {
-    cards!: Dexie.Table<IFlashcard, UUID>;
+    cards!: Dexie.Table<IFlashcard, IFlashcard['uuid']>;
 
     constructor() {
         super('CottontailDB');
