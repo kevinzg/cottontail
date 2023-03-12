@@ -12,7 +12,7 @@ interface AnkiErrorResponse {
 
 export type AnkiResponse<T> = AnkiOkResponse<T> | AnkiErrorResponse;
 
-export interface AnkiModel {
+export interface AnkiNote {
     deckName: string;
     modelName: string;
     fields: Record<string, string>;
@@ -40,7 +40,7 @@ export default class Anki {
         return response.result || [];
     }
 
-    async addNote(note: AnkiModel): Promise<AnkiResponse<number>> {
+    async addNote(note: AnkiNote): Promise<AnkiResponse<number>> {
         return await this.request<any>({
             action: 'addNote',
             version: 6,
