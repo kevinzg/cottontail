@@ -8,9 +8,9 @@
     (window as any).db = db;
 
     // @ts-ignore
-    let cards = liveQuery<IFlashcard[]>(() => db.cards.toArray()) as Readable<
-        IFlashcard[]
-    >;
+    let cards = liveQuery<IFlashcard[]>(() =>
+        db.cards.toCollection().reverse().sortBy('uuid')
+    ) as Readable<IFlashcard[]>;
 
     function downloadTextFile(
         text: string,
@@ -135,8 +135,13 @@
                             </div>
                         {/if}
                         <div class="text-sm">
-                            <span class="font-medium text-gray-700">Date:</span>
-                            <span>{card.createdAt.toDateString()}</span>
+                            <span class="font-medium text-gray-700"
+                                >Created:</span
+                            >
+                            <span
+                                >{card.createdAt.toDateString()}
+                                {card.createdAt.toLocaleTimeString()}</span
+                            >
                         </div>
                     </div>
                 </details>
