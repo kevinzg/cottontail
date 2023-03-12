@@ -1,16 +1,17 @@
 <script lang="ts">
-    import { liveQuery } from 'dexie';
-    import type { Readable } from 'svelte/store';
-    import { Database } from './lib/database';
     import type { IFlashcard } from './lib/types';
+    import * as service from './lib/service';
 
-    const db = new Database();
-    (window as any).db = db;
+    let cards = service.allCardsStore();
 
-    // @ts-ignore
-    let cards = liveQuery<IFlashcard[]>(() =>
-        db.cards.toCollection().reverse().sortBy('uuid')
-    ) as Readable<IFlashcard[]>;
+    let pendingSyncCards: number;
+    $: {
+        if ($cards) {
+            pendingSyncCards = $cards.filter(
+                (c) => !c.ankiVersion || c.updatedAt > c.ankiVersion
+            ).length;
+        }
+    }
 
     function downloadTextFile(
         text: string,
@@ -91,8 +92,7 @@
             `Are you sure you want to delete card: ${card.front}?`
         );
         if (!confirmed) return;
-        // TODO: Delete from Anki? Have a tombstone instead?
-        db.cards.delete(card.uuid).catch(console.error);
+        service.deleteCard(card).catch(console.error);
     }
 </script>
 

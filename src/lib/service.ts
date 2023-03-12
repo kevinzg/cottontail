@@ -1,11 +1,13 @@
-import Anki, { type AnkiNote } from './anki';
+import { liveQuery } from 'dexie';
 
-import { Database } from './database';
 import type { IFlashcard, IFlashcardData } from './types';
+import Anki, { type AnkiNote } from './anki';
+import { Database } from './database';
 import { randomUID } from './uid';
+import type { Readable } from 'svelte/store';
 
-const db = new Database();
-const anki = new Anki();
+const db = ((window as any).db = new Database());
+const anki = ((window as any).anki = new Anki());
 
 const BASIC_REVERSABLE_CARD = 'Basic (optional reversed card)';
 const CLOZE_CARD = 'Cloze';
@@ -21,7 +23,13 @@ export async function saveCard(data: { card: IFlashcardData }) {
     return db.cards
         .put(card)
         .then((id) => console.log('Card saved with id', id))
-        .then(() => ensureAnkiPermission())
+        .then(() => syncToAnki(card))
+        .catch(console.error); // TODO: Handle errors somewher else
+}
+
+// TODO: Take care of race conditions
+export async function syncToAnki(card: IFlashcard) {
+    ensureAnkiPermission()
         .then(async () => {
             const note = makeAnkiNote(card);
             await ensureAnkiDeckExists(note.deckName);
@@ -29,14 +37,28 @@ export async function saveCard(data: { card: IFlashcardData }) {
         })
         .then((ankiId) => {
             console.log('Anki note created for card', card.uuid, ankiId);
-            // TODO: Take care of race conditions
             return db.cards.update(card.uuid, {
                 ankiId,
                 ankiVersion: card.updatedAt,
             });
-        })
-        .catch(console.error);
+        });
 }
+
+// TODO: Delete from Anki? Have a tombstone instead?
+export async function deleteCard(card: IFlashcard) {
+    return db.cards.delete(card.uuid);
+}
+
+export const allCardsStore: () => Readable<IFlashcard[]> = (() => {
+    let cards: Readable<IFlashcard[]>;
+    return () => {
+        if (cards) return cards;
+        cards = liveQuery<IFlashcard[]>(() =>
+            db.cards.toCollection().reverse().sortBy('uuid')
+        ) as unknown as Readable<IFlashcard[]>;
+        return cards;
+    };
+})();
 
 function makeAnkiNote(card: IFlashcard): AnkiNote {
     const { modelName, fields } = getFields(card);
